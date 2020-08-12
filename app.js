@@ -13,7 +13,7 @@ const AWS = require('aws-sdk');
 AWS.config.update({region: 'us-east-1'});
 
 const app = express()
-const env = process.env.NODE_ENV || 'development'
+const env = process.env.NODE_ENV || 'production'
 
 app.set('trust proxy', 1)
 app.use(session({
