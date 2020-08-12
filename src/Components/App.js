@@ -30,11 +30,49 @@ import FlatButton from 'material-ui/FlatButton'
 import logo from './../../assets/images/logo.svg'
 
 injectTapEventPlugin()
-const HOST = PRODUCTION ? '/' : 'http://localhost:3000/'
+const HOST = process.env.PORT ? '/' : 'http://localhost:3000/'
 
 export default class App extends Component {
   constructor() {
     super()
+
+    window.location.search
+    .slice( 1 )
+    .split( '&' )
+    .forEach( function( param ) {
+      param = param.split( '=' );
+      // store.set( param[ 0 ], decodeURIComponent( param[ 1 ] ) );
+    });
+    
+
+    var offset = new Date().getTimezoneOffset();
+    var start_hour = 15 - (offset / 60)
+    var hour_array = []
+    var start_array = []
+
+    while ( start_array.length < 4 ) {
+      let num = (Math.floor(Math.random() * 6) * 10)
+      if (start_array.includes(num)) {continue}
+      start_array.push(num)
+    }
+    start_array.sort(function(a, b){return b-a})
+
+    if (start_hour == 11 ){
+      hour_array.push(start_hour)
+      hour_array.push(start_hour)
+      hour_array.push(start_hour + (Math.floor(Math.random() * 7) + 2))
+      hour_array.push(start_hour + (Math.floor(Math.random() * 7) + 2))
+    }
+    else{
+      hour_array.push(start_hour + (Math.floor(Math.random() * 7) + 2))
+      hour_array.push(start_hour + (Math.floor(Math.random() * 7) + 2))
+
+      hour_array.push(start_hour + 1)
+      hour_array.push(start_hour)
+    }
+    hour_array.sort()
+
+
     this.state = {
       loading: true,
       navOpen: false,
@@ -46,7 +84,10 @@ export default class App extends Component {
       validEmail: true,
       validPhone: true,
       smallScreen: window.innerWidth < 768,
-      confirmationSnackbarOpen: false
+      confirmationSnackbarOpen: false,
+      hours_array: hour_array,
+      starts_array: start_array,
+      user_offset: offset
     }
 
     this.handleNavToggle = this.handleNavToggle.bind(this)
@@ -123,9 +164,12 @@ export default class App extends Component {
   }
 
   handleSubmit() {
+    const split = this.state.appointmentDate.toString().split(' 00:00:00 ')
+    const calc_military = this.state.appointmentSlot.includes("PM") ?   (parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12) + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]): this.state.appointmentSlot.split(' AM')[0]
+    const date_time =  split[0] + ' ' + calc_military + ':00 ' + split[1]  //moment().format('YYYY-DD-MM h:mm a')
     const appointment = {
       date: moment(this.state.appointmentDate).format('YYYY-DD-MM'),
-      slot: this.state.appointmentSlot,
+      slot: date_time,
       name: this.state.firstName + ' ' + this.state.lastName,
       email: this.state.email,
       phone: this.state.phone
@@ -159,28 +203,35 @@ export default class App extends Component {
       { <span>
         Scheduling a
 
-          <span style={spanStyle}> 1 hour </span>
+          <span style={spanStyle}> 10 Minute </span>
 
         appointment {this.state.appointmentDate && <span>
           on <span style={spanStyle}>{moment(this.state.appointmentDate).format('dddd[,] MMMM Do')}</span>
-      </span>} {Number.isInteger(this.state.appointmentSlot) && <span>at <span style={spanStyle}>{moment().hour(9).minute(0).add(this.state.appointmentSlot, 'hours').format('h:mm a')}</span></span>}
+      </span>} {Number.isInteger(1) && <span>at <span style={spanStyle}>{this.state.appointmentSlot}</span></span>}
       </span>}
     </h2> : null
   }
 
   renderAppointmentTimes() {
+    const hour_array = [...this.state.hours_array]
+    const start_array = [...this.state.starts_array]
+
     if (!this.state.loading) {
-      const slots = [...Array(8).keys()]
+      const slots = [...Array(4).keys()]
       return slots.map(slot => {
         const appointmentDateString = moment(this.state.appointmentDate).format('YYYY-DD-MM')
-        const t1 = moment().hour(9).minute(0).add(slot, 'hours')
-        const t2 = moment().hour(9).minute(0).add(slot + 1, 'hours')
+
+        const cur_hour = hour_array.pop()
+        const number_start = start_array.pop()
+        const t1 = moment().hour(cur_hour).minute(number_start).add(0, 'minutes')
+        const t2 = moment().hour(cur_hour).minute(number_start).add(10, 'minutes')
         const scheduleDisabled = this.state.schedule[appointmentDateString] ? this.state.schedule[moment(this.state.appointmentDate).format('YYYY-DD-MM')][slot] : false
         const meridiemDisabled = this.state.appointmentMeridiem ? t1.format('a') === 'am' : t1.format('a') === 'pm'
+        const time = ( cur_hour > 12 ? ( cur_hour - 12 ) : cur_hour) + ':' + (number_start == 0 ? '00' : number_start) + (cur_hour > 12 ? ' PM' : ' AM')
         return <RadioButton
           label={t1.format('h:mm a') + ' - ' + t2.format('h:mm a')}
           key={slot}
-          value={slot}
+          value={time}
           style={{marginBottom: 15, display: meridiemDisabled ? 'none' : 'inherit'}}
           disabled={scheduleDisabled || meridiemDisabled}/>
       })
@@ -195,7 +246,7 @@ export default class App extends Component {
       <p>Name: <span style={spanStyle}>{this.state.firstName} {this.state.lastName}</span></p>
       <p>Number: <span style={spanStyle}>{this.state.phone}</span></p>
       <p>Email: <span style={spanStyle}>{this.state.email}</span></p>
-      <p>Appointment: <span style={spanStyle}>{moment(this.state.appointmentDate).format('dddd[,] MMMM Do[,] YYYY')}</span> at <span style={spanStyle}>{moment().hour(9).minute(0).add(this.state.appointmentSlot, 'hours').format('h:mm a')}</span></p>
+      <p>Appointment: <span style={spanStyle}>{moment(this.state.appointmentDate).format('dddd[,] MMMM Do[,] YYYY')}</span> at <span style={spanStyle}>{this.state.appointmentSlot}</span></p>
     </section>
   }
 
@@ -243,30 +294,6 @@ export default class App extends Component {
         <AppBar
           title={data.siteTitle}
           onLeftIconButtonTouchTap={() => this.handleNavToggle() }/>
-        <Drawer
-          docked={false}
-          width={300}
-          open={navOpen}
-          onRequestChange={(navOpen) => this.setState({navOpen})} >
-          <img src={logo}
-               style={{
-                 height: 70,
-                 marginTop: 50,
-                 marginBottom: 30,
-                 marginLeft: '50%',
-                 transform: 'translateX(-50%)'
-               }}/>
-          <a style={{textDecoration: 'none'}} href={this.state.homePageUrl}><MenuItem>Home</MenuItem></a>
-          <a style={{textDecoration: 'none'}} href={this.state.aboutPageUrl}><MenuItem>About</MenuItem></a>
-          <a style={{textDecoration: 'none'}} href={this.state.contactPageUrl}><MenuItem>Contact</MenuItem></a>
-
-          <MenuItem disabled={true}
-                    style={{
-                      marginLeft: '50%',
-                      transform: 'translate(-50%)'
-                    }}>
-            {"© Copyright " + moment().format('YYYY')}</MenuItem>
-        </Drawer>
         <section style={{
             maxWidth: !smallScreen ? '80%' : '100%',
             margin: 'auto',
@@ -305,12 +332,12 @@ export default class App extends Component {
                 </StepButton>
                 <StepContent>
                   <SelectField
-                    floatingLabelText="AM or PM"
+                    floatingLabelText="Morning or Afternoon"
                     value={data.appointmentMeridiem}
                     onChange={(evt, key, payload) => this.handleSetAppointmentMeridiem(payload)}
-                    selectionRenderer={value => value ? 'PM' : 'AM'}>
-                    <MenuItem value={0}>AM</MenuItem>
-                    <MenuItem value={1}>PM</MenuItem>
+                    selectionRenderer={value => value ? 'Afternoon' : 'Morning'}>
+                    <MenuItem value={0}>Morning</MenuItem>
+                    <MenuItem value={1}>Afternoon</MenuItem>
                   </SelectField>
                   <RadioButtonGroup
                     style={{ marginTop: 15,
