@@ -36,7 +36,7 @@ module.exports = {
       xhtml: true
     }),
     new webpack.DefinePlugin({
-      PRODUCTION: process.env.NODE_ENV === 'production'
+      PRODUCTION: true //process.env.NODE_ENV === 'production'
     })
   ]
 }

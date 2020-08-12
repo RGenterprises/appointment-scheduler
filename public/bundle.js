@@ -51686,7 +51686,7 @@ module.exports = ReactDOMInvalidARIAHook;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
+
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -51787,7 +51787,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 (0, _reactTapEventPlugin2.default)();
-var HOST = process.env.PORT ? '/' : 'http://localhost:3000/';
+var HOST = '/'; //process.env.XDG_SESSION_ID ? '/' : 'http://localhost:3000/'
 
 var App = function (_Component) {
   _inherits(App, _Component);
@@ -52361,7 +52361,6 @@ var App = function (_Component) {
 }(_react.Component);
 
 exports.default = App;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
 /* 443 */
