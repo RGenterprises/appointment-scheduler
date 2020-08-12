@@ -8,6 +8,9 @@
     "dev": "nodemon app.js",
     "build": "webpack"
   },
+  "engines": {
+    "node": "12.16.1"
+  },
   "dependencies": {
     "async": "^2.5.0",
     "aws-sdk": "^2.728.0",
