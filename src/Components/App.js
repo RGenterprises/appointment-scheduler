@@ -30,7 +30,7 @@ import FlatButton from 'material-ui/FlatButton'
 import logo from './../../assets/images/logo.svg'
 
 injectTapEventPlugin()
-const HOST = process.env.PORT ? '/' : 'http://localhost:3000/'
+const HOST = process.env.XDG_SESSION_ID ? '/' : 'http://localhost:3000/'
 
 export default class App extends Component {
   constructor() {
