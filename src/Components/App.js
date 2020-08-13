@@ -170,8 +170,8 @@ export default class App extends Component {
     const appointment = {
       date: moment(this.state.appointmentDate).format('YYYY-DD-MM'),
       slot: date_time,
-      name: this.state.firstName + ' ' + this.state.lastName,
-      email: this.state.email,
+      // name: this.state.firstName + ' ' + this.state.lastName,
+      // email: this.state.email,
       phone: this.state.phone
     }
     axios.post(HOST + 'api/appointments', appointment)
@@ -243,9 +243,9 @@ export default class App extends Component {
   renderAppointmentConfirmation() {
     const spanStyle = { color: '#00bcd4' }
     return <section>
-      <p>Name: <span style={spanStyle}>{this.state.firstName} {this.state.lastName}</span></p>
+      {/* <p>Name: <span style={spanStyle}>{this.state.firstName} {this.state.lastName}</span></p> */}
       <p>Number: <span style={spanStyle}>{this.state.phone}</span></p>
-      <p>Email: <span style={spanStyle}>{this.state.email}</span></p>
+      {/* <p>Email: <span style={spanStyle}>{this.state.email}</span></p> */}
       <p>Appointment: <span style={spanStyle}>{moment(this.state.appointmentDate).format('dddd[,] MMMM Do[,] YYYY')}</span> at <span style={spanStyle}>{this.state.appointmentSlot}</span></p>
     </section>
   }
@@ -278,7 +278,8 @@ export default class App extends Component {
 
   render() {
     const { stepIndex, loading, navOpen, smallScreen, confirmationModalOpen, confirmationSnackbarOpen, ...data } = this.state
-    const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
+    // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
+    const contactFormFilled = data.phone && data.validPhone
     const modalActions = [
       <FlatButton
         label="Cancel"
@@ -356,7 +357,7 @@ export default class App extends Component {
                 </StepButton>
                 <StepContent>
                   <section>
-                    <TextField
+                    {/* <TextField
                       style={{ display: 'block' }}
                       name="first_name"
                       hintText="First Name"
@@ -374,7 +375,7 @@ export default class App extends Component {
                       hintText="name@mail.com"
                       floatingLabelText="Email"
                       errorText={data.validEmail ? null : 'Enter a valid email address'}
-                      onChange={(evt, newValue) => this.validateEmail(newValue)}/>
+                      onChange={(evt, newValue) => this.validateEmail(newValue)}/> */}
                     <TextField
                       style={{ display: 'block' }}
                       name="phone"
