@@ -229,7 +229,7 @@ export default class App extends Component {
         const meridiemDisabled = this.state.appointmentMeridiem ? t1.format('a') === 'am' : t1.format('a') === 'pm'
         const time = ( cur_hour > 12 ? ( cur_hour - 12 ) : cur_hour) + ':' + (number_start == 0 ? '00' : number_start) + (cur_hour > 12 ? ' PM' : ' AM')
         return <RadioButton
-          label={t1.format('h:mm a') + ' - ' + t2.format('h:mm a')}
+          label={t1.format('h:mm a')} // + ' - ' + t2.format('h:mm a')}
           key={slot}
           value={time}
           style={{marginBottom: 15, display: meridiemDisabled ? 'none' : 'inherit'}}
