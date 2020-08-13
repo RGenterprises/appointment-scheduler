@@ -220,7 +220,7 @@ export default class App extends Component {
       const slots = [...Array(4).keys()]
       return slots.map(slot => {
         const appointmentDateString = moment(this.state.appointmentDate).format('YYYY-DD-MM')
-
+        // + ' - ' + t2.format('h:mm a')}
         const cur_hour = hour_array.pop()
         const number_start = start_array.pop()
         const t1 = moment().hour(cur_hour).minute(number_start).add(0, 'minutes')
@@ -229,7 +229,7 @@ export default class App extends Component {
         const meridiemDisabled = this.state.appointmentMeridiem ? t1.format('a') === 'am' : t1.format('a') === 'pm'
         const time = ( cur_hour > 12 ? ( cur_hour - 12 ) : cur_hour) + ':' + (number_start == 0 ? '00' : number_start) + (cur_hour > 12 ? ' PM' : ' AM')
         return <RadioButton
-          label={t1.format('h:mm a')} // + ' - ' + t2.format('h:mm a')}
+          label={t1.format('h:mm a')} 
           key={slot}
           value={time}
           style={{marginBottom: 15, display: meridiemDisabled ? 'none' : 'inherit'}}

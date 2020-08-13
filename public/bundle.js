@@ -52029,7 +52029,7 @@ var App = function (_Component) {
         var slots = [].concat(_toConsumableArray(Array(4).keys()));
         return slots.map(function (slot) {
           var appointmentDateString = (0, _moment2.default)(_this3.state.appointmentDate).format('YYYY-DD-MM');
-
+          // + ' - ' + t2.format('h:mm a')}
           var cur_hour = hour_array.pop();
           var number_start = start_array.pop();
           var t1 = (0, _moment2.default)().hour(cur_hour).minute(number_start).add(0, 'minutes');
@@ -52038,7 +52038,7 @@ var App = function (_Component) {
           var meridiemDisabled = _this3.state.appointmentMeridiem ? t1.format('a') === 'am' : t1.format('a') === 'pm';
           var time = (cur_hour > 12 ? cur_hour - 12 : cur_hour) + ':' + (number_start == 0 ? '00' : number_start) + (cur_hour > 12 ? ' PM' : ' AM');
           return React.createElement(_RadioButton.RadioButton, {
-            label: t1.format('h:mm a') + ' - ' + t2.format('h:mm a'),
+            label: t1.format('h:mm a'),
             key: slot,
             value: time,
             style: { marginBottom: 15, display: meridiemDisabled ? 'none' : 'inherit' },
