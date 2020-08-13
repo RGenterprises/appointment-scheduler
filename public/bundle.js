@@ -51947,8 +51947,8 @@ var App = function (_Component) {
       var appointment = {
         date: (0, _moment2.default)(this.state.appointmentDate).format('YYYY-DD-MM'),
         slot: date_time,
-        name: this.state.firstName + ' ' + this.state.lastName,
-        email: this.state.email,
+        // name: this.state.firstName + ' ' + this.state.lastName,
+        // email: this.state.email,
         phone: this.state.phone
       };
       _axios2.default.post(HOST + 'api/appointments', appointment).then(function (response) {
@@ -52058,33 +52058,11 @@ var App = function (_Component) {
         React.createElement(
           'p',
           null,
-          'Name: ',
-          React.createElement(
-            'span',
-            { style: spanStyle },
-            this.state.firstName,
-            ' ',
-            this.state.lastName
-          )
-        ),
-        React.createElement(
-          'p',
-          null,
           'Number: ',
           React.createElement(
             'span',
             { style: spanStyle },
             this.state.phone
-          )
-        ),
-        React.createElement(
-          'p',
-          null,
-          'Email: ',
-          React.createElement(
-            'span',
-            { style: spanStyle },
-            this.state.email
           )
         ),
         React.createElement(
@@ -52149,8 +52127,10 @@ var App = function (_Component) {
           confirmationModalOpen = _state.confirmationModalOpen,
           confirmationSnackbarOpen = _state.confirmationSnackbarOpen,
           data = _objectWithoutProperties(_state, ['stepIndex', 'loading', 'navOpen', 'smallScreen', 'confirmationModalOpen', 'confirmationSnackbarOpen']);
+      // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
 
-      var contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail;
+
+      var contactFormFilled = data.phone && data.validPhone;
       var modalActions = [React.createElement(_FlatButton2.default, {
         label: 'Cancel',
         primary: false,
@@ -52286,31 +52266,6 @@ var App = function (_Component) {
                   React.createElement(
                     'section',
                     null,
-                    React.createElement(_TextField2.default, {
-                      style: { display: 'block' },
-                      name: 'first_name',
-                      hintText: 'First Name',
-                      floatingLabelText: 'First Name',
-                      onChange: function onChange(evt, newValue) {
-                        return _this5.setState({ firstName: newValue });
-                      } }),
-                    React.createElement(_TextField2.default, {
-                      style: { display: 'block' },
-                      name: 'last_name',
-                      hintText: 'Last Name',
-                      floatingLabelText: 'Last Name',
-                      onChange: function onChange(evt, newValue) {
-                        return _this5.setState({ lastName: newValue });
-                      } }),
-                    React.createElement(_TextField2.default, {
-                      style: { display: 'block' },
-                      name: 'email',
-                      hintText: 'name@mail.com',
-                      floatingLabelText: 'Email',
-                      errorText: data.validEmail ? null : 'Enter a valid email address',
-                      onChange: function onChange(evt, newValue) {
-                        return _this5.validateEmail(newValue);
-                      } }),
                     React.createElement(_TextField2.default, {
                       style: { display: 'block' },
                       name: 'phone',
