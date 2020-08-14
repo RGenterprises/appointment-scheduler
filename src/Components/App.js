@@ -35,16 +35,7 @@ const HOST = '/' //process.env.XDG_SESSION_ID ? '/' : 'http://localhost:3000/'
 export default class App extends Component {
   constructor() {
     super()
-
-    window.location.search
-    .slice( 1 )
-    .split( '&' )
-    .forEach( function( param ) {
-      param = param.split( '=' );
-      // store.set( param[ 0 ], decodeURIComponent( param[ 1 ] ) );
-    });
     
-
     var offset = new Date().getTimezoneOffset();
     var start_hour = 15 - (offset / 60)
     var hour_array = []
@@ -72,6 +63,8 @@ export default class App extends Component {
     }
     hour_array.sort()
 
+    let dt = new Date()
+    let maxdate = new Date(dt.setDate(dt.getDate() + 14))
 
     this.state = {
       loading: true,
@@ -87,8 +80,19 @@ export default class App extends Component {
       confirmationSnackbarOpen: false,
       hours_array: hour_array,
       starts_array: start_array,
-      user_offset: offset
+      user_offset: offset,
+      dateMax: maxdate
     }
+
+    window.location.search
+    .slice( 1 )
+    .split( '&' )
+    .forEach( function( param ) {
+      param = param.split( '=' );
+      this.state[param[0]] = decodeURIComponent( param[1])
+      // store.set( param[ 0 ], decodeURIComponent( param[ 1 ] ) );
+    }, this);
+
 
     this.handleNavToggle = this.handleNavToggle.bind(this)
     this.handleNextStep = this.handleNextStep.bind(this)
@@ -194,7 +198,7 @@ export default class App extends Component {
 
   checkDisableDate(day) {
     const dateString = moment(day).format('YYYY-DD-MM')
-    return this.state.schedule[dateString] === true || moment(day).startOf('day').diff(moment().startOf('day')) < 0
+    return this.state.schedule[dateString] === true || moment(day).startOf('day').diff(moment().startOf('day')) < 0 || day.getDay() === 0 || day.getDay() === 6
   }
 
   renderConfirmationString() {
@@ -279,7 +283,7 @@ export default class App extends Component {
   render() {
     const { stepIndex, loading, navOpen, smallScreen, confirmationModalOpen, confirmationSnackbarOpen, ...data } = this.state
     // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
-    const contactFormFilled = data.phone && data.validPhone
+    const contactFormFilled = ( data.phone && data.validPhone ) || this.state.phone_number
     const modalActions = [
       <FlatButton
         label="Cancel"
@@ -324,6 +328,7 @@ export default class App extends Component {
                       mode={smallScreen ? 'portrait' : 'landscape'}
                       onChange={(n, date) => this.handleSetAppointmentDate(date)}
                       shouldDisableDate={day => this.checkDisableDate(day)}
+                      maxDate={ this.state.dateMax } 
                        />
                   </StepContent>
               </Step>
@@ -377,8 +382,10 @@ export default class App extends Component {
                       errorText={data.validEmail ? null : 'Enter a valid email address'}
                       onChange={(evt, newValue) => this.validateEmail(newValue)}/> */}
                     <TextField
+                      disabled={ !!this.state.phone_number }
                       style={{ display: 'block' }}
                       name="phone"
+                      defaultValue={ this.state.phone_number }
                       hintText="(888) 888-8888"
                       floatingLabelText="Phone"
                       errorText={data.validPhone ? null: 'Enter a valid phone number'}

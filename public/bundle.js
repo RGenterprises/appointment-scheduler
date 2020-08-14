@@ -51797,11 +51797,6 @@ var App = function (_Component) {
 
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
-    window.location.search.slice(1).split('&').forEach(function (param) {
-      param = param.split('=');
-      // store.set( param[ 0 ], decodeURIComponent( param[ 1 ] ) );
-    });
-
     var offset = new Date().getTimezoneOffset();
     var start_hour = 15 - offset / 60;
     var hour_array = [];
@@ -51832,6 +51827,9 @@ var App = function (_Component) {
     }
     hour_array.sort();
 
+    var dt = new Date();
+    var maxdate = new Date(dt.setDate(dt.getDate() + 14));
+
     _this.state = {
       loading: true,
       navOpen: false,
@@ -51846,8 +51844,15 @@ var App = function (_Component) {
       confirmationSnackbarOpen: false,
       hours_array: hour_array,
       starts_array: start_array,
-      user_offset: offset
+      user_offset: offset,
+      dateMax: maxdate
     };
+
+    window.location.search.slice(1).split('&').forEach(function (param) {
+      param = param.split('=');
+      this.state[param[0]] = decodeURIComponent(param[1]);
+      // store.set( param[ 0 ], decodeURIComponent( param[ 1 ] ) );
+    }, _this);
 
     _this.handleNavToggle = _this.handleNavToggle.bind(_this);
     _this.handleNextStep = _this.handleNextStep.bind(_this);
@@ -51974,7 +51979,7 @@ var App = function (_Component) {
     key: 'checkDisableDate',
     value: function checkDisableDate(day) {
       var dateString = (0, _moment2.default)(day).format('YYYY-DD-MM');
-      return this.state.schedule[dateString] === true || (0, _moment2.default)(day).startOf('day').diff((0, _moment2.default)().startOf('day')) < 0;
+      return this.state.schedule[dateString] === true || (0, _moment2.default)(day).startOf('day').diff((0, _moment2.default)().startOf('day')) < 0 || day.getDay() === 0 || day.getDay() === 6;
     }
   }, {
     key: 'renderConfirmationString',
@@ -52130,7 +52135,7 @@ var App = function (_Component) {
       // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
 
 
-      var contactFormFilled = data.phone && data.validPhone;
+      var contactFormFilled = data.phone && data.validPhone || this.state.phone_number;
       var modalActions = [React.createElement(_FlatButton2.default, {
         label: 'Cancel',
         primary: false,
@@ -52196,7 +52201,8 @@ var App = function (_Component) {
                     },
                     shouldDisableDate: function shouldDisableDate(day) {
                       return _this5.checkDisableDate(day);
-                    }
+                    },
+                    maxDate: this.state.dateMax
                   })
                 )
               ),
@@ -52267,8 +52273,10 @@ var App = function (_Component) {
                     'section',
                     null,
                     React.createElement(_TextField2.default, {
+                      disabled: !!this.state.phone_number,
                       style: { display: 'block' },
                       name: 'phone',
+                      defaultValue: this.state.phone_number,
                       hintText: '(888) 888-8888',
                       floatingLabelText: 'Phone',
                       errorText: data.validPhone ? null : 'Enter a valid phone number',
