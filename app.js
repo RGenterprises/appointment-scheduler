@@ -39,7 +39,7 @@ app.post('/api/appointments', (req, res) => {
 
   var params = {
     // Remove DelaySeconds parameter and value for FIFO queues
-   DelaySeconds: 900,
+   DelaySeconds: 0,
    MessageBody: JSON.stringify(req.body),
    // MessageDeduplicationId: "TheWhistler",  // Required for FIFO queues
    // MessageGroupId: "Group1",  // Required for FIFO queues

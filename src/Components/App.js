@@ -93,6 +93,8 @@ export default class App extends Component {
       // store.set( param[ 0 ], decodeURIComponent( param[ 1 ] ) );
     }, this);
 
+    console.log(this.state)
+
 
     this.handleNavToggle = this.handleNavToggle.bind(this)
     this.handleNextStep = this.handleNextStep.bind(this)
@@ -216,32 +218,68 @@ export default class App extends Component {
     </h2> : null
   }
 
-  renderAppointmentTimes() {
-    const hour_array = [...this.state.hours_array]
-    const start_array = [...this.state.starts_array]
-
-    if (!this.state.loading) {
-      const slots = [...Array(4).keys()]
-      return slots.map(slot => {
-        const appointmentDateString = moment(this.state.appointmentDate).format('YYYY-DD-MM')
-        // + ' - ' + t2.format('h:mm a')}
-        const cur_hour = hour_array.pop()
-        const number_start = start_array.pop()
-        const t1 = moment().hour(cur_hour).minute(number_start).add(0, 'minutes')
-        const t2 = moment().hour(cur_hour).minute(number_start).add(10, 'minutes')
-        const scheduleDisabled = this.state.schedule[appointmentDateString] ? this.state.schedule[moment(this.state.appointmentDate).format('YYYY-DD-MM')][slot] : false
-        const meridiemDisabled = this.state.appointmentMeridiem ? t1.format('a') === 'am' : t1.format('a') === 'pm'
-        const time = ( cur_hour > 12 ? ( cur_hour - 12 ) : cur_hour) + ':' + (number_start == 0 ? '00' : number_start) + (cur_hour > 12 ? ' PM' : ' AM')
-        return <RadioButton
-          label={t1.format('h:mm a')} 
-          key={slot}
-          value={time}
-          style={{marginBottom: 15, display: meridiemDisabled ? 'none' : 'inherit'}}
-          disabled={scheduleDisabled || meridiemDisabled}/>
-      })
-    } else {
-      return null
+  renderManualTimeSlot(){
+    if ( this.state.admin ){
+      return (
+        <section>
+          <TextField
+              style={{ display: 'block' }}
+              name="admin_time_slot"
+              hintText="1:25 PM"
+              floatingLabelText="Admin Appointment Slot"
+              onChange={(evt, val) => this.setState({ admin_appointment_time: val })}/>
+          <RaisedButton
+              style={{ display: 'block' }}
+              label={'Select Time'}
+              labelPosition="before"
+              primary={true}
+              fullWidth={false}
+              onClick={() => this.handleSetAppointmentSlot(this.state.admin_appointment_time)}
+              disabled={false}
+              style={{ marginTop: 20, maxWidth: 100}} />
+          </section>
+          )
     }
+    else {
+      return
+      <RadioButtonGroup
+      style={{ marginTop: 15,
+               marginLeft: 15
+             }}
+      name="appointmentTimes"
+      defaultSelected={data.appointmentSlot}
+      onChange={(evt, val) => this.handleSetAppointmentSlot(val)}>
+      {this.renderAppointmentTimes()}
+    </RadioButtonGroup>
+    }
+  }
+
+  renderAppointmentTimes() {
+      const hour_array = [...this.state.hours_array]
+      const start_array = [...this.state.starts_array]
+  
+      if (!this.state.loading) {
+        const slots = [...Array(4).keys()]
+        return slots.map(slot => {
+          const appointmentDateString = moment(this.state.appointmentDate).format('YYYY-DD-MM')
+          // + ' - ' + t2.format('h:mm a')}
+          const cur_hour = hour_array.pop()
+          const number_start = start_array.pop()
+          const t1 = moment().hour(cur_hour).minute(number_start).add(0, 'minutes')
+          const t2 = moment().hour(cur_hour).minute(number_start).add(10, 'minutes')
+          const scheduleDisabled = this.state.schedule[appointmentDateString] ? this.state.schedule[moment(this.state.appointmentDate).format('YYYY-DD-MM')][slot] : false
+          const meridiemDisabled = this.state.appointmentMeridiem ? t1.format('a') === 'am' : t1.format('a') === 'pm'
+          const time = ( cur_hour > 12 ? ( cur_hour - 12 ) : cur_hour) + ':' + (number_start == 0 ? '00' : number_start) + (cur_hour > 12 ? ' PM' : ' AM')
+          return <RadioButton
+            label={t1.format('h:mm a')} 
+            key={slot}
+            value={time}
+            style={{marginBottom: 15, display: meridiemDisabled ? 'none' : 'inherit'}}
+            disabled={scheduleDisabled || meridiemDisabled}/>
+        })
+      } else {
+        return null
+      }
   }
 
   renderAppointmentConfirmation() {
@@ -345,15 +383,7 @@ export default class App extends Component {
                     <MenuItem value={0}>Morning</MenuItem>
                     <MenuItem value={1}>Afternoon</MenuItem>
                   </SelectField>
-                  <RadioButtonGroup
-                    style={{ marginTop: 15,
-                             marginLeft: 15
-                           }}
-                    name="appointmentTimes"
-                    defaultSelected={data.appointmentSlot}
-                    onChange={(evt, val) => this.handleSetAppointmentSlot(val)}>
-                    {this.renderAppointmentTimes()}
-                  </RadioButtonGroup>
+                  {this.renderManualTimeSlot()}
                 </StepContent>
               </Step>
               <Step disabled={ !Number.isInteger(this.state.appointmentSlot) }>
