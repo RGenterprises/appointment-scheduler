@@ -232,7 +232,7 @@ export default class App extends Component {
           <TextField
               style={{ display: 'block' }}
               name="admin_time_slot"
-              hintText="1:25 PM"
+              hintText="14:25"
               floatingLabelText="Admin Appointment Slot"
               onChange={(evt, val) => this.setState({ admin_appointment_time: val })}/>
           <RaisedButton
@@ -368,7 +368,7 @@ export default class App extends Component {
                         marginTop: 10,
                         marginLeft: 10
                       }}
-                      value={data.appointmentDate}
+                      value={this.handleSetAppointmentDate(data.appointmentDate)}
                       hintText="Select a date"
                       mode={smallScreen ? 'portrait' : 'landscape'}
                       onChange={(n, date) => this.handleSetAppointmentDate(date)}

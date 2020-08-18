@@ -52041,7 +52041,7 @@ var App = function (_Component) {
           React.createElement(_TextField2.default, {
             style: { display: 'block' },
             name: 'admin_time_slot',
-            hintText: '1:25 PM',
+            hintText: '14:25',
             floatingLabelText: 'Admin Appointment Slot',
             onChange: function onChange(evt, val) {
               return _this3.setState({ admin_appointment_time: val });
@@ -52246,7 +52246,7 @@ var App = function (_Component) {
                       marginTop: 10,
                       marginLeft: 10
                     },
-                    value: data.appointmentDate,
+                    value: this.handleSetAppointmentDate(data.appointmentDate),
                     hintText: 'Select a date',
                     mode: smallScreen ? 'portrait' : 'landscape',
                     onChange: function onChange(n, date) {
