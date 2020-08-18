@@ -185,7 +185,8 @@ export default class App extends Component {
     axios.post(HOST + 'api/appointments', appointment)
     .then(response => {
       this.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true })
-      window.top.location = '/'
+      setTimeout(() => {  window.top.location = '/'; }, 10000);
+      
     }
     )
     .catch(err => {

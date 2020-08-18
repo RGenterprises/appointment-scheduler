@@ -51962,7 +51962,9 @@ var App = function (_Component) {
       };
       _axios2.default.post(HOST + 'api/appointments', appointment).then(function (response) {
         _this2.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true });
-        window.top.location = '/';
+        setTimeout(function () {
+          window.top.location = '/';
+        }, 10000);
       }).catch(function (err) {
         console.log(err);
         return _this2.setState({ confirmationSnackbarMessage: "Appointment failed to save.", confirmationSnackbarOpen: true });
