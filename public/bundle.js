@@ -51911,7 +51911,7 @@ var App = function (_Component) {
 
       var initSchedule = {};
       var today = (0, _moment2.default)().startOf('day');
-      initSchedule[today.format('YYYY-DD-MM')] = true;
+      // initSchedule[today.format('YYYY-DD-MM')] = true
       var schedule = !appointments.length ? initSchedule : appointments.reduce(function (currentSchedule, appointment) {
         var date = appointment.date,
             slot = appointment.slot;
@@ -51962,7 +51962,7 @@ var App = function (_Component) {
       };
       _axios2.default.post(HOST + 'api/appointments', appointment).then(function (response) {
         _this2.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true });
-        window.top.location = '/?admin=true';
+        window.top.location = '/';
       }).catch(function (err) {
         console.log(err);
         return _this2.setState({ confirmationSnackbarMessage: "Appointment failed to save.", confirmationSnackbarOpen: true });

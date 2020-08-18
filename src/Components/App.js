@@ -140,7 +140,7 @@ export default class App extends Component {
     const { configs, appointments } = response
     const initSchedule = {}
     const today = moment().startOf('day')
-    initSchedule[today.format('YYYY-DD-MM')] = true
+    // initSchedule[today.format('YYYY-DD-MM')] = true
     const schedule = !appointments.length ? initSchedule : appointments.reduce((currentSchedule, appointment) => {
       const { date, slot } = appointment
       const dateString = moment(date, 'YYYY-DD-MM').format('YYYY-DD-MM')
@@ -185,7 +185,7 @@ export default class App extends Component {
     axios.post(HOST + 'api/appointments', appointment)
     .then(response => {
       this.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true })
-      window.top.location = '/?admin=true'
+      window.top.location = '/'
     }
     )
     .catch(err => {
