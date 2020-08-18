@@ -67,6 +67,7 @@ export default class App extends Component {
     let maxdate = new Date(dt.setDate(dt.getDate() + 14))
 
     this.state = {
+      admin: true,
       loading: true,
       navOpen: false,
       confirmationModalOpen: false,
@@ -126,6 +127,7 @@ export default class App extends Component {
   }
 
   handleSetAppointmentSlot(slot) {
+    console.log('slot', slot)
     this.handleNextStep()
     this.setState({ appointmentSlot: slot })
   }
@@ -181,7 +183,11 @@ export default class App extends Component {
       phone: this.state.phone
     }
     axios.post(HOST + 'api/appointments', appointment)
-    .then(response => this.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true }))
+    .then(response => {
+      this.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true })
+      window.top.location = '/?admin=true'
+    }
+    )
     .catch(err => {
       console.log(err)
       return this.setState({ confirmationSnackbarMessage: "Appointment failed to save.", confirmationSnackbarOpen: true })
@@ -375,14 +381,14 @@ export default class App extends Component {
                   Choose an available time for your appointment
                 </StepButton>
                 <StepContent>
-                  <SelectField
+                  {/* <SelectField
                     floatingLabelText="Morning or Afternoon"
                     value={data.appointmentMeridiem}
                     onChange={(evt, key, payload) => this.handleSetAppointmentMeridiem(payload)}
                     selectionRenderer={value => value ? 'Afternoon' : 'Morning'}>
                     <MenuItem value={0}>Morning</MenuItem>
                     <MenuItem value={1}>Afternoon</MenuItem>
-                  </SelectField>
+                  </SelectField> */}
                   {this.renderManualTimeSlot()}
                 </StepContent>
               </Step>

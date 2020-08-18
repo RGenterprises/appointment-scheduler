@@ -51831,6 +51831,7 @@ var App = function (_Component) {
     var maxdate = new Date(dt.setDate(dt.getDate() + 14));
 
     _this.state = {
+      admin: true,
       loading: true,
       navOpen: false,
       confirmationModalOpen: false,
@@ -51893,6 +51894,7 @@ var App = function (_Component) {
   }, {
     key: 'handleSetAppointmentSlot',
     value: function handleSetAppointmentSlot(slot) {
+      console.log('slot', slot);
       this.handleNextStep();
       this.setState({ appointmentSlot: slot });
     }
@@ -51959,7 +51961,8 @@ var App = function (_Component) {
         phone: this.state.phone
       };
       _axios2.default.post(HOST + 'api/appointments', appointment).then(function (response) {
-        return _this2.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true });
+        _this2.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true });
+        window.top.location = '/?admin=true';
       }).catch(function (err) {
         console.log(err);
         return _this2.setState({ confirmationSnackbarMessage: "Appointment failed to save.", confirmationSnackbarOpen: true });
@@ -52267,28 +52270,6 @@ var App = function (_Component) {
                 React.createElement(
                   _stepper.StepContent,
                   null,
-                  React.createElement(
-                    _SelectField2.default,
-                    {
-                      floatingLabelText: 'Morning or Afternoon',
-                      value: data.appointmentMeridiem,
-                      onChange: function onChange(evt, key, payload) {
-                        return _this6.handleSetAppointmentMeridiem(payload);
-                      },
-                      selectionRenderer: function selectionRenderer(value) {
-                        return value ? 'Afternoon' : 'Morning';
-                      } },
-                    React.createElement(
-                      _MenuItem2.default,
-                      { value: 0 },
-                      'Morning'
-                    ),
-                    React.createElement(
-                      _MenuItem2.default,
-                      { value: 1 },
-                      'Afternoon'
-                    )
-                  ),
                   this.renderManualTimeSlot()
                 )
               ),
