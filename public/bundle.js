@@ -51951,7 +51951,7 @@ var App = function (_Component) {
       var _this2 = this;
 
       var split = this.state.appointmentDate.toString().split(' 00:00:00 ');
-      var calc_military = this.state.appointmentSlot.includes("PM") ? parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12 + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]) : this.state.appointmentSlot.split(' AM')[0];
+      var calc_military = this.state.appointmentSlot; //.includes("PM") ?   (parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12) + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]) : this.state.appointmentSlot.split(' AM')[0]
       var date_time = split[0] + ' ' + calc_military + ':00 ' + split[1]; //moment().format('YYYY-DD-MM h:mm a')
       var appointment = {
         date: (0, _moment2.default)(this.state.appointmentDate).format('YYYY-DD-MM'),

@@ -173,7 +173,7 @@ export default class App extends Component {
 
   handleSubmit() {
     const split = this.state.appointmentDate.toString().split(' 00:00:00 ')
-    const calc_military = this.state.appointmentSlot.includes("PM") ?   (parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12) + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]): this.state.appointmentSlot.split(' AM')[0]
+    const calc_military = this.state.appointmentSlot //.includes("PM") ?   (parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12) + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]) : this.state.appointmentSlot.split(' AM')[0]
     const date_time =  split[0] + ' ' + calc_military + ':00 ' + split[1]  //moment().format('YYYY-DD-MM h:mm a')
     const appointment = {
       date: moment(this.state.appointmentDate).format('YYYY-DD-MM'),
