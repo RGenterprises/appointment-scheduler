@@ -41,6 +41,7 @@ export default class App extends Component {
     var hour_array = []
     var start_array = []
 
+    
     while ( start_array.length < 4 ) {
       let num = (Math.floor(Math.random() * 6) * 10)
       if (start_array.includes(num)) {continue}
@@ -122,6 +123,8 @@ export default class App extends Component {
   }
 
   handleSetAppointmentDate(date) {
+    console.log('date', date)
+    // Tue Aug 18 2020 00:00:00 GMT-0400 (Eastern Daylight Time)
     this.handleNextStep()
     this.setState({ appointmentDate: date, confirmationTextVisible: true })
   }
@@ -139,7 +142,7 @@ export default class App extends Component {
   handleFetch(response) {
     const { configs, appointments } = response
     const initSchedule = {}
-    const today = moment().startOf('day')
+    // const today = moment().startOf('day')
     // initSchedule[today.format('YYYY-DD-MM')] = true
     const schedule = !appointments.length ? initSchedule : appointments.reduce((currentSchedule, appointment) => {
       const { date, slot } = appointment
@@ -172,7 +175,12 @@ export default class App extends Component {
   }
 
   handleSubmit() {
-    const split = this.state.appointmentDate.toString().split(' 00:00:00 ')
+    const today = new Date()
+    const event1 = new Date('July 1, 1999')
+    const event2 = this.state.appointmentDate
+    event2.setTime(event1.getTime());
+
+    const split = event2.toString().split(' 00:00:00 ')
     const calc_military = this.state.appointmentSlot //.includes("PM") ?   (parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12) + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]) : this.state.appointmentSlot.split(' AM')[0]
     const date_time =  split[0] + ' ' + calc_military + ':00 ' + split[1]  //moment().format('YYYY-DD-MM h:mm a')
     const appointment = {
@@ -182,6 +190,7 @@ export default class App extends Component {
       // email: this.state.email,
       phone: this.state.phone
     }
+    console.log('appointment', appointment)
     axios.post(HOST + 'api/appointments', appointment)
     .then(response => {
       this.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true })
@@ -368,7 +377,7 @@ export default class App extends Component {
                         marginTop: 10,
                         marginLeft: 10
                       }}
-                      value={this.handleSetAppointmentDate(data.appointmentDate)}
+                      value={data.appointmentDate}
                       hintText="Select a date"
                       mode={smallScreen ? 'portrait' : 'landscape'}
                       onChange={(n, date) => this.handleSetAppointmentDate(date)}

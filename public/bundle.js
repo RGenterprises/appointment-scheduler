@@ -51888,6 +51888,8 @@ var App = function (_Component) {
   }, {
     key: 'handleSetAppointmentDate',
     value: function handleSetAppointmentDate(date) {
+      console.log('date', date);
+      // Tue Aug 18 2020 00:00:00 GMT-0400 (Eastern Daylight Time)
       this.handleNextStep();
       this.setState({ appointmentDate: date, confirmationTextVisible: true });
     }
@@ -51910,7 +51912,7 @@ var App = function (_Component) {
           appointments = response.appointments;
 
       var initSchedule = {};
-      var today = (0, _moment2.default)().startOf('day');
+      // const today = moment().startOf('day')
       // initSchedule[today.format('YYYY-DD-MM')] = true
       var schedule = !appointments.length ? initSchedule : appointments.reduce(function (currentSchedule, appointment) {
         var date = appointment.date,
@@ -51948,9 +51950,10 @@ var App = function (_Component) {
   }, {
     key: 'handleSubmit',
     value: function handleSubmit() {
-      var _this2 = this;
+      var event2 = this.state.appointmentDate;
+      event2.setTime('00:00:00');
 
-      var split = this.state.appointmentDate.toString().split(' 00:00:00 ');
+      var split = event2.toString().split(' 00:00:00 ');
       var calc_military = this.state.appointmentSlot; //.includes("PM") ?   (parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12) + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]) : this.state.appointmentSlot.split(' AM')[0]
       var date_time = split[0] + ' ' + calc_military + ':00 ' + split[1]; //moment().format('YYYY-DD-MM h:mm a')
       var appointment = {
@@ -51960,15 +51963,18 @@ var App = function (_Component) {
         // email: this.state.email,
         phone: this.state.phone
       };
-      _axios2.default.post(HOST + 'api/appointments', appointment).then(function (response) {
-        _this2.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true });
-        setTimeout(function () {
-          window.top.location = '/';
-        }, 10000);
-      }).catch(function (err) {
-        console.log(err);
-        return _this2.setState({ confirmationSnackbarMessage: "Appointment failed to save.", confirmationSnackbarOpen: true });
-      });
+      console.log('appointment', appointment);
+      // axios.post(HOST + 'api/appointments', appointment)
+      // .then(response => {
+      //   this.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true })
+      //   setTimeout(() => {  window.top.location = '/'; }, 10000);
+
+      // }
+      // )
+      // .catch(err => {
+      //   console.log(err)
+      //   return this.setState({ confirmationSnackbarMessage: "Appointment failed to save.", confirmationSnackbarOpen: true })
+      // })
     }
   }, {
     key: 'validateEmail',
@@ -52032,7 +52038,7 @@ var App = function (_Component) {
   }, {
     key: 'renderManualTimeSlot',
     value: function renderManualTimeSlot() {
-      var _this3 = this;
+      var _this2 = this;
 
       if (this.state.admin) {
         return React.createElement(
@@ -52044,7 +52050,7 @@ var App = function (_Component) {
             hintText: '14:25',
             floatingLabelText: 'Admin Appointment Slot',
             onChange: function onChange(evt, val) {
-              return _this3.setState({ admin_appointment_time: val });
+              return _this2.setState({ admin_appointment_time: val });
             } }),
           React.createElement(_RaisedButton2.default, _defineProperty({
             style: { display: 'block' },
@@ -52053,7 +52059,7 @@ var App = function (_Component) {
             primary: true,
             fullWidth: false,
             onClick: function onClick() {
-              return _this3.handleSetAppointmentSlot(_this3.state.admin_appointment_time);
+              return _this2.handleSetAppointmentSlot(_this2.state.admin_appointment_time);
             },
             disabled: false
           }, 'style', { marginTop: 20, maxWidth: 100 }))
@@ -52069,7 +52075,7 @@ var App = function (_Component) {
             name: 'appointmentTimes',
             defaultSelected: data.appointmentSlot,
             onChange: function onChange(evt, val) {
-              return _this3.handleSetAppointmentSlot(val);
+              return _this2.handleSetAppointmentSlot(val);
             } },
           this.renderAppointmentTimes()
         );
@@ -52078,7 +52084,7 @@ var App = function (_Component) {
   }, {
     key: 'renderAppointmentTimes',
     value: function renderAppointmentTimes() {
-      var _this4 = this;
+      var _this3 = this;
 
       var hour_array = [].concat(_toConsumableArray(this.state.hours_array));
       var start_array = [].concat(_toConsumableArray(this.state.starts_array));
@@ -52086,14 +52092,14 @@ var App = function (_Component) {
       if (!this.state.loading) {
         var slots = [].concat(_toConsumableArray(Array(4).keys()));
         return slots.map(function (slot) {
-          var appointmentDateString = (0, _moment2.default)(_this4.state.appointmentDate).format('YYYY-DD-MM');
+          var appointmentDateString = (0, _moment2.default)(_this3.state.appointmentDate).format('YYYY-DD-MM');
           // + ' - ' + t2.format('h:mm a')}
           var cur_hour = hour_array.pop();
           var number_start = start_array.pop();
           var t1 = (0, _moment2.default)().hour(cur_hour).minute(number_start).add(0, 'minutes');
           var t2 = (0, _moment2.default)().hour(cur_hour).minute(number_start).add(10, 'minutes');
-          var scheduleDisabled = _this4.state.schedule[appointmentDateString] ? _this4.state.schedule[(0, _moment2.default)(_this4.state.appointmentDate).format('YYYY-DD-MM')][slot] : false;
-          var meridiemDisabled = _this4.state.appointmentMeridiem ? t1.format('a') === 'am' : t1.format('a') === 'pm';
+          var scheduleDisabled = _this3.state.schedule[appointmentDateString] ? _this3.state.schedule[(0, _moment2.default)(_this3.state.appointmentDate).format('YYYY-DD-MM')][slot] : false;
+          var meridiemDisabled = _this3.state.appointmentMeridiem ? t1.format('a') === 'am' : t1.format('a') === 'pm';
           var time = (cur_hour > 12 ? cur_hour - 12 : cur_hour) + ':' + (number_start == 0 ? '00' : number_start) + (cur_hour > 12 ? ' PM' : ' AM');
           return React.createElement(_RadioButton.RadioButton, {
             label: t1.format('h:mm a'),
@@ -52149,7 +52155,7 @@ var App = function (_Component) {
   }, {
     key: 'componentWillMount',
     value: function componentWillMount() {
-      var _this5 = this;
+      var _this4 = this;
 
       _async2.default.series({
         configs: function configs(callback) {
@@ -52163,7 +52169,7 @@ var App = function (_Component) {
           });
         }
       }, function (err, response) {
-        err ? _this5.handleFetchError(err) : _this5.handleFetch(response);
+        err ? _this4.handleFetchError(err) : _this4.handleFetch(response);
       });
       addEventListener('resize', this.resize);
     }
@@ -52175,7 +52181,7 @@ var App = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
-      var _this6 = this;
+      var _this5 = this;
 
       var _state = this.state,
           stepIndex = _state.stepIndex,
@@ -52193,12 +52199,12 @@ var App = function (_Component) {
         label: 'Cancel',
         primary: false,
         onClick: function onClick() {
-          return _this6.setState({ confirmationModalOpen: false });
+          return _this5.setState({ confirmationModalOpen: false });
         } }), React.createElement(_FlatButton2.default, {
         label: 'Confirm',
         primary: true,
         onClick: function onClick() {
-          return _this6.handleSubmit();
+          return _this5.handleSubmit();
         } })];
       return React.createElement(
         'div',
@@ -52206,7 +52212,7 @@ var App = function (_Component) {
         React.createElement(_AppBar2.default, {
           title: data.siteTitle,
           onLeftIconButtonTouchTap: function onLeftIconButtonTouchTap() {
-            return _this6.handleNavToggle();
+            return _this5.handleNavToggle();
           } }),
         React.createElement(
           'section',
@@ -52234,7 +52240,7 @@ var App = function (_Component) {
                 React.createElement(
                   _stepper.StepButton,
                   { onClick: function onClick() {
-                      return _this6.setState({ stepIndex: 0 });
+                      return _this5.setState({ stepIndex: 0 });
                     } },
                   'Choose an available day for your appointment'
                 ),
@@ -52246,14 +52252,14 @@ var App = function (_Component) {
                       marginTop: 10,
                       marginLeft: 10
                     },
-                    value: this.handleSetAppointmentDate(data.appointmentDate),
+                    value: data.appointmentDate,
                     hintText: 'Select a date',
                     mode: smallScreen ? 'portrait' : 'landscape',
                     onChange: function onChange(n, date) {
-                      return _this6.handleSetAppointmentDate(date);
+                      return _this5.handleSetAppointmentDate(date);
                     },
                     shouldDisableDate: function shouldDisableDate(day) {
-                      return _this6.checkDisableDate(day);
+                      return _this5.checkDisableDate(day);
                     },
                     maxDate: this.state.dateMax
                   })
@@ -52265,7 +52271,7 @@ var App = function (_Component) {
                 React.createElement(
                   _stepper.StepButton,
                   { onClick: function onClick() {
-                      return _this6.setState({ stepIndex: 1 });
+                      return _this5.setState({ stepIndex: 1 });
                     } },
                   'Choose an available time for your appointment'
                 ),
@@ -52281,7 +52287,7 @@ var App = function (_Component) {
                 React.createElement(
                   _stepper.StepButton,
                   { onClick: function onClick() {
-                      return _this6.setState({ stepIndex: 2 });
+                      return _this5.setState({ stepIndex: 2 });
                     } },
                   'Share your contact information with us and we\'ll send you a reminder'
                 ),
@@ -52300,7 +52306,7 @@ var App = function (_Component) {
                       floatingLabelText: 'Phone',
                       errorText: data.validPhone ? null : 'Enter a valid phone number',
                       onChange: function onChange(evt, newValue) {
-                        return _this6.validatePhone(newValue);
+                        return _this5.validatePhone(newValue);
                       } }),
                     React.createElement(_RaisedButton2.default, _defineProperty({
                       style: { display: 'block' },
@@ -52309,7 +52315,7 @@ var App = function (_Component) {
                       primary: true,
                       fullWidth: true,
                       onClick: function onClick() {
-                        return _this6.setState({ confirmationModalOpen: !_this6.state.confirmationModalOpen });
+                        return _this5.setState({ confirmationModalOpen: !_this5.state.confirmationModalOpen });
                       },
                       disabled: !contactFormFilled || data.processed
                     }, 'style', { marginTop: 20, maxWidth: 100 }))
@@ -52332,7 +52338,7 @@ var App = function (_Component) {
             message: loading ? 'Loading... ' : data.confirmationSnackbarMessage || '',
             autoHideDuration: 10000,
             onRequestClose: function onRequestClose() {
-              return _this6.setState({ confirmationSnackbarOpen: false });
+              return _this5.setState({ confirmationSnackbarOpen: false });
             } })
         )
       );
