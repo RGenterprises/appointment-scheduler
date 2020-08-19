@@ -51826,6 +51826,7 @@ var App = function (_Component) {
       hour_array.push(start_hour);
     }
     hour_array.sort();
+    hour_array.reverse();
 
     var dt = new Date();
     var maxdate = new Date(dt.setDate(dt.getDate() + 14));

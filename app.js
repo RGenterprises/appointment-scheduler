@@ -45,8 +45,6 @@ app.post('/api/appointments', (req, res) => {
    // MessageGroupId: "Group1",  // Required for FIFO queues
    QueueUrl: "https://sqs.us-east-1.amazonaws.com/413712306043/schedule_appointment"
  };
-
- console.log('params', params)
  
  sqs.sendMessage(params, function(err, data) {
    if (err) {

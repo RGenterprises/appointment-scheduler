@@ -62,6 +62,7 @@ export default class App extends Component {
       hour_array.push(start_hour)
     }
     hour_array.sort()
+    hour_array.reverse()
 
     let dt = new Date()
     let maxdate = new Date(dt.setDate(dt.getDate() + 14))
