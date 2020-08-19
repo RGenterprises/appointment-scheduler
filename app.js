@@ -39,12 +39,14 @@ app.post('/api/appointments', (req, res) => {
 
   var params = {
     // Remove DelaySeconds parameter and value for FIFO queues
-   DelaySeconds: 900,
+   DelaySeconds: 600,
    MessageBody: JSON.stringify(req.body),
    // MessageDeduplicationId: "TheWhistler",  // Required for FIFO queues
    // MessageGroupId: "Group1",  // Required for FIFO queues
    QueueUrl: "https://sqs.us-east-1.amazonaws.com/413712306043/schedule_appointment"
  };
+
+ console.log('params', params)
  
  sqs.sendMessage(params, function(err, data) {
    if (err) {

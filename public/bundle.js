@@ -52138,7 +52138,7 @@ var App = function (_Component) {
       // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
 
 
-      var contactFormFilled = data.phone && data.validPhone || this.state.phone_number;
+      var contactFormFilled = data.phone && data.validPhone || this.state.phone;
       var modalActions = [React.createElement(_FlatButton2.default, {
         label: 'Cancel',
         primary: false,
@@ -52276,10 +52276,10 @@ var App = function (_Component) {
                     'section',
                     null,
                     React.createElement(_TextField2.default, {
-                      disabled: !!this.state.phone_number,
+                      disabled: !!this.state.phone,
                       style: { display: 'block' },
                       name: 'phone',
-                      defaultValue: this.state.phone_number,
+                      defaultValue: this.state.phone,
                       hintText: '(888) 888-8888',
                       floatingLabelText: 'Phone',
                       errorText: data.validPhone ? null : 'Enter a valid phone number',

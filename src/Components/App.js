@@ -287,7 +287,7 @@ export default class App extends Component {
   render() {
     const { stepIndex, loading, navOpen, smallScreen, confirmationModalOpen, confirmationSnackbarOpen, ...data } = this.state
     // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
-    const contactFormFilled = ( data.phone && data.validPhone ) || this.state.phone_number
+    const contactFormFilled = ( data.phone && data.validPhone ) || this.state.phone
     const modalActions = [
       <FlatButton
         label="Cancel"
@@ -386,10 +386,10 @@ export default class App extends Component {
                       errorText={data.validEmail ? null : 'Enter a valid email address'}
                       onChange={(evt, newValue) => this.validateEmail(newValue)}/> */}
                     <TextField
-                      disabled={ !!this.state.phone_number }
+                      disabled={ !!this.state.phone }
                       style={{ display: 'block' }}
                       name="phone"
-                      defaultValue={ this.state.phone_number }
+                      defaultValue={ this.state.phone }
                       hintText="(888) 888-8888"
                       floatingLabelText="Phone"
                       errorText={data.validPhone ? null: 'Enter a valid phone number'}
