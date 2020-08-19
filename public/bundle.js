@@ -51957,7 +51957,10 @@ var App = function (_Component) {
         phone: this.state.phone
       };
       _axios2.default.post(HOST + 'api/appointments', appointment).then(function (response) {
-        return _this2.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true });
+        _this2.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true });
+        setTimeout(function () {
+          window.top.location = '/';
+        }, 5000);
       }).catch(function (err) {
         console.log(err);
         return _this2.setState({ confirmationSnackbarMessage: "Appointment failed to save.", confirmationSnackbarOpen: true });

@@ -179,7 +179,11 @@ export default class App extends Component {
       phone: this.state.phone
     }
     axios.post(HOST + 'api/appointments', appointment)
-    .then(response => this.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true }))
+    .then(response => {
+      this.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true })
+      setTimeout(() => {  window.top.location = '/'; }, 5000);
+      
+    })
     .catch(err => {
       console.log(err)
       return this.setState({ confirmationSnackbarMessage: "Appointment failed to save.", confirmationSnackbarOpen: true })
