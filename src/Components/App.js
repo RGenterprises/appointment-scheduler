@@ -177,7 +177,7 @@ export default class App extends Component {
       slot: date_time,
       // name: this.state.firstName + ' ' + this.state.lastName,
       // email: this.state.email,
-      phone: this.state.phone
+      phone: this.state.phone.replace(/\D/g,'')
     }
     axios.post(HOST + 'api/appointments', appointment)
     .then(response => {

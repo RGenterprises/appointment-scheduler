@@ -51955,7 +51955,7 @@ var App = function (_Component) {
         slot: date_time,
         // name: this.state.firstName + ' ' + this.state.lastName,
         // email: this.state.email,
-        phone: this.state.phone
+        phone: this.state.phone.replace(/\D/g, '')
       };
       _axios2.default.post(HOST + 'api/appointments', appointment).then(function (response) {
         _this2.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true });
