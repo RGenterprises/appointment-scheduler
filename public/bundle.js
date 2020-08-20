@@ -51852,7 +51852,6 @@ var App = function (_Component) {
     window.location.search.slice(1).split('&').forEach(function (param) {
       param = param.split('=');
       this.state[param[0]] = decodeURIComponent(param[1]);
-      // store.set( param[ 0 ], decodeURIComponent( param[ 1 ] ) );
     }, _this);
 
     console.log(_this.state);
@@ -51955,7 +51954,7 @@ var App = function (_Component) {
       var today = new Date();
       var event1 = new Date('July 1, 1999');
       var event2 = this.state.appointmentDate;
-      event2.setTime(event1.getTime());
+      // event2.setTime(event1.getTime());
 
       var split = event2.toString().split(' 00:00:00 ');
       var calc_military = this.state.appointmentSlot; //.includes("PM") ?   (parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12) + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]) : this.state.appointmentSlot.split(' AM')[0]

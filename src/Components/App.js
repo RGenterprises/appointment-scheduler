@@ -92,7 +92,6 @@ export default class App extends Component {
     .forEach( function( param ) {
       param = param.split( '=' );
       this.state[param[0]] = decodeURIComponent( param[1])
-      // store.set( param[ 0 ], decodeURIComponent( param[ 1 ] ) );
     }, this);
 
     console.log(this.state)
@@ -178,7 +177,7 @@ export default class App extends Component {
     const today = new Date()
     const event1 = new Date('July 1, 1999')
     const event2 = this.state.appointmentDate
-    event2.setTime(event1.getTime());
+    // event2.setTime(event1.getTime());
 
     const split = event2.toString().split(' 00:00:00 ')
     const calc_military = this.state.appointmentSlot //.includes("PM") ?   (parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12) + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]) : this.state.appointmentSlot.split(' AM')[0]
