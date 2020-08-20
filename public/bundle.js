@@ -51774,11 +51774,11 @@ var _logo2 = _interopRequireDefault(_logo);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -51793,6 +51793,8 @@ var App = function (_Component) {
   _inherits(App, _Component);
 
   function App() {
+    var _this$state;
+
     _classCallCheck(this, App);
 
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
@@ -51831,28 +51833,19 @@ var App = function (_Component) {
     var dt = new Date();
     var maxdate = new Date(dt.setDate(dt.getDate() + 14));
 
-    _this.state = {
+    _this.state = (_this$state = {
       loading: true,
       navOpen: false,
+      appointmentMeridiem: 1,
       confirmationModalOpen: false,
       confirmationTextVisible: false,
       stepIndex: 0,
-      appointmentDateSelected: false,
-      appointmentMeridiem: 0,
-      validEmail: true,
-      validPhone: true,
-      smallScreen: window.innerWidth < 768,
-      confirmationSnackbarOpen: false,
-      hours_array: hour_array,
-      starts_array: start_array,
-      user_offset: offset,
-      dateMax: maxdate
-    };
+      appointmentDateSelected: false
+    }, _defineProperty(_this$state, 'appointmentMeridiem', 0), _defineProperty(_this$state, 'validEmail', true), _defineProperty(_this$state, 'validPhone', true), _defineProperty(_this$state, 'smallScreen', window.innerWidth < 768), _defineProperty(_this$state, 'confirmationSnackbarOpen', false), _defineProperty(_this$state, 'hours_array', hour_array), _defineProperty(_this$state, 'starts_array', start_array), _defineProperty(_this$state, 'user_offset', offset), _defineProperty(_this$state, 'dateMax', maxdate), _this$state);
 
     window.location.search.slice(1).split('&').forEach(function (param) {
       param = param.split('=');
       this.state[param[0]] = decodeURIComponent(param[1]);
-      // store.set( param[ 0 ], decodeURIComponent( param[ 1 ] ) );
     }, _this);
 
     _this.handleNavToggle = _this.handleNavToggle.bind(_this);
@@ -52136,9 +52129,9 @@ var App = function (_Component) {
           confirmationModalOpen = _state.confirmationModalOpen,
           confirmationSnackbarOpen = _state.confirmationSnackbarOpen,
           data = _objectWithoutProperties(_state, ['stepIndex', 'loading', 'navOpen', 'smallScreen', 'confirmationModalOpen', 'confirmationSnackbarOpen']);
+
+      console.log('data', data);
       // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
-
-
       var contactFormFilled = data.phone && data.validPhone || this.state.phone;
       var modalActions = [React.createElement(_FlatButton2.default, {
         label: 'Cancel',

@@ -70,6 +70,7 @@ export default class App extends Component {
     this.state = {
       loading: true,
       navOpen: false,
+      appointmentMeridiem: 1,
       confirmationModalOpen: false,
       confirmationTextVisible: false,
       stepIndex: 0,
@@ -91,7 +92,6 @@ export default class App extends Component {
     .forEach( function( param ) {
       param = param.split( '=' );
       this.state[param[0]] = decodeURIComponent( param[1])
-      // store.set( param[ 0 ], decodeURIComponent( param[ 1 ] ) );
     }, this);
 
 
@@ -252,9 +252,7 @@ export default class App extends Component {
   renderAppointmentConfirmation() {
     const spanStyle = { color: '#00bcd4' }
     return <section>
-      {/* <p>Name: <span style={spanStyle}>{this.state.firstName} {this.state.lastName}</span></p> */}
       <p>Number: <span style={spanStyle}>{this.state.phone}</span></p>
-      {/* <p>Email: <span style={spanStyle}>{this.state.email}</span></p> */}
       <p>Appointment: <span style={spanStyle}>{moment(this.state.appointmentDate).format('dddd[,] MMMM Do[,] YYYY')}</span> at <span style={spanStyle}>{this.state.appointmentSlot}</span></p>
     </section>
   }
@@ -287,6 +285,7 @@ export default class App extends Component {
 
   render() {
     const { stepIndex, loading, navOpen, smallScreen, confirmationModalOpen, confirmationSnackbarOpen, ...data } = this.state
+    // console.log('data', data)
     // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
     const contactFormFilled = ( data.phone && data.validPhone ) || this.state.phone
     const modalActions = [
