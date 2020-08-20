@@ -52,54 +52,9 @@ app.post('/api/appointments', (req, res) => {
      res.json({ data: 'errir' })
    } else {
      console.log("Success", data.MessageId);
-     res.json({ data: 'succes' })
+     res.json({ data: 'success' })
    }
  });
-  // const twilioSid = config.twilio.sid
-  // const twilioAuth = config.twilio.auth
-  // const twilioClient = twilio(twilioSid, twilioAuth)
-  // const twilioNumber = config.twilio.number
-  // const appointment = req.body
-  // appointment.phone = appointment.phone.replace(/\D/g,'')
-  // const date = moment(appointment.date, 'YYYY-DD-MM').startOf('day')
-  // const time = date.hour(11).add(appointment.slot, 'hours')
-  // const smsBody = `${appointment.name}, this message is to confirm your appointment at ${time.format('h:mm a')} on ${date.format('dddd MMMM Do[,] YYYY')}.`
-  //send confirmation message to user
-  // twilioClient.messages.create({
-  //   to: '+1' + appointment.phone,
-  //   from: twilioNumber,
-  //   body: smsBody
-  // }, (err, message) => console.log(message, err))
-  //push to cosmic
-  // const cosmicObject = {
-  //   "title": appointment.name,
-  //   "type_slug": "appointments",
-  //   "write_key": config.bucket.write_key,
-  //   "metafields": [
-  //     {
-  //       "key": "date",
-  //       "type": "text",
-  //       "value": date.format('YYYY-DD-MM')
-  //     },
-  //     {
-  //       "key": "slot",
-  //       "type": "text",
-  //       "value": appointment.slot
-  //     },
-  //     {
-  //       "key": "email",
-  //       "type": "text",
-  //       "value": appointment.email
-  //     },{
-  //       "key": "phone",
-  //       "type": "text",
-  //       "value": appointment.phone //which is now stripped of all non-digits
-  //     }
-  //   ]
-  // }
-
-  // axios.post(`https://api.cosmicjs.com/v1/${config.bucket.slug}/add-object`, cosmicObject)
-  // .then(responst => res.json({ data: 'succes' })).catch(err => res.json({ data: 'error '}))
 })
 
 //expose site configs
