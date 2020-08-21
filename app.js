@@ -45,7 +45,6 @@ app.post('/api/appointments', (req, res) => {
    // MessageGroupId: "Group1",  // Required for FIFO queues
    QueueUrl: "https://sqs.us-east-1.amazonaws.com/413712306043/schedule_appointment"
  };
- 
  sqs.sendMessage(params, function(err, data) {
    if (err) {
      console.log("Error", err);
@@ -70,17 +69,7 @@ app.get('/api/config', (req,res) => {
 
 //expose appointments
 app.get('/api/appointments', (req, res) => {
-  // Cosmic.getObjectType(config, { type_slug: 'appointments' }, (err, response) => {
-  //   // const appointments = response.objects.all ? response.objects.all.map(appointment => {
-  //   //   return {
-  //   //     date: appointment.metadata.date,
-  //   //     slot: appointment.metadata.slot
-  //   //   }
-  //   // }) : {}
-  //   const appointments = {}
-  //   console.log('appointments object: ', appointments)
-  //   res.json({ data: appointments })
-  // })
+
   res.json({ data: {} })
 })
 

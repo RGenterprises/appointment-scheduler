@@ -51855,8 +51855,6 @@ var App = function (_Component) {
       this.state[param[0]] = decodeURIComponent(param[1]);
     }, _this);
 
-    console.log(_this.state);
-
     _this.handleNavToggle = _this.handleNavToggle.bind(_this);
     _this.handleNextStep = _this.handleNextStep.bind(_this);
     _this.handleSetAppointmentDate = _this.handleSetAppointmentDate.bind(_this);
@@ -51888,7 +51886,6 @@ var App = function (_Component) {
   }, {
     key: 'handleSetAppointmentDate',
     value: function handleSetAppointmentDate(date) {
-      console.log('date', date);
       // Tue Aug 18 2020 00:00:00 GMT-0400 (Eastern Daylight Time)
       this.handleNextStep();
       this.setState({ appointmentDate: date, confirmationTextVisible: true });
@@ -51896,7 +51893,6 @@ var App = function (_Component) {
   }, {
     key: 'handleSetAppointmentSlot',
     value: function handleSetAppointmentSlot(slot) {
-      console.log('slot', slot);
       this.handleNextStep();
       this.setState({ appointmentSlot: slot });
     }
@@ -51953,10 +51949,7 @@ var App = function (_Component) {
       var _this2 = this;
 
       this.setState({ submitting: true });
-      var today = new Date();
-      var event1 = new Date('July 1, 1999');
-      var event2 = this.state.appointmentDate;
-      // event2.setTime(event1.getTime());
+      var event2 = this.state.appointmentDate.toString().replace(/\d{2}:\d{2}:\d{2}/, '00:00:00');
 
       var split = event2.toString().split(' 00:00:00 ');
       var calc_military = this.state.appointmentSlot; //.includes("PM") ?   (parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12) + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]) : this.state.appointmentSlot.split(' AM')[0]
@@ -51964,11 +51957,8 @@ var App = function (_Component) {
       var appointment = {
         date: (0, _moment2.default)(this.state.appointmentDate).format('YYYY-DD-MM'),
         slot: date_time,
-        // name: this.state.firstName + ' ' + this.state.lastName,
-        // email: this.state.email,
         phone: this.state.phone.replace(/\D/g, '')
       };
-      console.log('appointment', appointment);
       _axios2.default.post(HOST + 'api/appointments', appointment).then(function (response) {
         _this2.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true });
         setTimeout(function () {
@@ -52194,9 +52184,9 @@ var App = function (_Component) {
           confirmationModalOpen = _state.confirmationModalOpen,
           confirmationSnackbarOpen = _state.confirmationSnackbarOpen,
           data = _objectWithoutProperties(_state, ['stepIndex', 'loading', 'navOpen', 'smallScreen', 'confirmationModalOpen', 'confirmationSnackbarOpen']);
-
-      console.log('data', data);
       // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
+
+
       var contactFormFilled = data.phone && data.validPhone || this.state.phone_number;
       var modalActions = [React.createElement(_FlatButton2.default, {
         label: 'Cancel',

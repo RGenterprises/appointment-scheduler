@@ -95,8 +95,6 @@ export default class App extends Component {
       this.state[param[0]] = decodeURIComponent( param[1])
     }, this);
 
-    console.log(this.state)
-
 
     this.handleNavToggle = this.handleNavToggle.bind(this)
     this.handleNextStep = this.handleNextStep.bind(this)
@@ -123,14 +121,12 @@ export default class App extends Component {
   }
 
   handleSetAppointmentDate(date) {
-    console.log('date', date)
     // Tue Aug 18 2020 00:00:00 GMT-0400 (Eastern Daylight Time)
     this.handleNextStep()
     this.setState({ appointmentDate: date, confirmationTextVisible: true })
   }
 
   handleSetAppointmentSlot(slot) {
-    console.log('slot', slot)
     this.handleNextStep()
     this.setState({ appointmentSlot: slot })
   }
@@ -176,10 +172,7 @@ export default class App extends Component {
 
   handleSubmit() {
     this.setState({ submitting : true })
-    const today = new Date()
-    const event1 = new Date('July 1, 1999')
-    const event2 = this.state.appointmentDate
-    // event2.setTime(event1.getTime());
+    const event2 = (this.state.appointmentDate.toString()).replace(/\d{2}:\d{2}:\d{2}/, '00:00:00')
 
     const split = event2.toString().split(' 00:00:00 ')
     const calc_military = this.state.appointmentSlot //.includes("PM") ?   (parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12) + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]) : this.state.appointmentSlot.split(' AM')[0]
@@ -187,11 +180,8 @@ export default class App extends Component {
     const appointment = {
       date: moment(this.state.appointmentDate).format('YYYY-DD-MM'),
       slot: date_time,
-      // name: this.state.firstName + ' ' + this.state.lastName,
-      // email: this.state.email,
       phone: this.state.phone.replace(/\D/g,'')
     }
-    console.log('appointment', appointment)
     axios.post(HOST + 'api/appointments', appointment)
     .then(response => {
       this.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true })
@@ -337,7 +327,6 @@ export default class App extends Component {
 
   render() {
     const { stepIndex, loading, navOpen, smallScreen, confirmationModalOpen, confirmationSnackbarOpen, ...data } = this.state
-    console.log('data', data)
     // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
     const contactFormFilled = ( data.phone && data.validPhone ) || this.state.phone_number
     const modalActions = [
