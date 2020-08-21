@@ -69,6 +69,7 @@ export default class App extends Component {
 
     this.state = {
       loading: true,
+      submitting: false,
       navOpen: false,
       appointmentMeridiem: 1,
       confirmationModalOpen: false,
@@ -169,6 +170,7 @@ export default class App extends Component {
   }
 
   handleSubmit() {
+    this.setState({ submitting : true })
     const split = this.state.appointmentDate.toString().split(' 00:00:00 ')
     const calc_military = this.state.appointmentSlot.includes("PM") ?   (parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12) + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]): this.state.appointmentSlot.split(' AM')[0]
     const date_time =  split[0] + ' ' + calc_military + ':00 ' + split[1]  //moment().format('YYYY-DD-MM h:mm a')
@@ -181,8 +183,8 @@ export default class App extends Component {
     }
     axios.post(HOST + 'api/appointments', appointment)
     .then(response => {
-      this.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true })
-      setTimeout(() => {  window.top.location = '/'; }, 5000);
+      this.setState({ confirmationSnackbarMessage: "Appointment succesfully added! You may close the window now.", confirmationSnackbarOpen: true, processed: true })
+      setTimeout(() => {  window.top.location = 'https://100insure.com' }, 5000);
       
     })
     .catch(err => {
@@ -292,10 +294,12 @@ export default class App extends Component {
       <FlatButton
         label="Cancel"
         primary={false}
+        disabled={ this.state.submitting }
         onClick={() => this.setState({ confirmationModalOpen : false})} />,
       <FlatButton
         label="Confirm"
         primary={true}
+        disabled={ this.state.submitting }
         onClick={() => this.handleSubmit()} />
     ]
     return (

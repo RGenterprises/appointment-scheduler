@@ -51835,6 +51835,7 @@ var App = function (_Component) {
 
     _this.state = (_this$state = {
       loading: true,
+      submitting: false,
       navOpen: false,
       appointmentMeridiem: 1,
       confirmationModalOpen: false,
@@ -51940,6 +51941,7 @@ var App = function (_Component) {
     value: function handleSubmit() {
       var _this2 = this;
 
+      this.setState({ submitting: true });
       var split = this.state.appointmentDate.toString().split(' 00:00:00 ');
       var calc_military = this.state.appointmentSlot.includes("PM") ? parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[0]) + 12 + ':' + parseInt(this.state.appointmentSlot.split(' PM')[0].split(':')[1]) : this.state.appointmentSlot.split(' AM')[0];
       var date_time = split[0] + ' ' + calc_military + ':00 ' + split[1]; //moment().format('YYYY-DD-MM h:mm a')
@@ -51951,9 +51953,9 @@ var App = function (_Component) {
         phone: this.state.phone.replace(/\D/g, '')
       };
       _axios2.default.post(HOST + 'api/appointments', appointment).then(function (response) {
-        _this2.setState({ confirmationSnackbarMessage: "Appointment succesfully added!", confirmationSnackbarOpen: true, processed: true });
+        _this2.setState({ confirmationSnackbarMessage: "Appointment succesfully added! You may close the window now.", confirmationSnackbarOpen: true, processed: true });
         setTimeout(function () {
-          window.top.location = '/';
+          window.top.location = 'https://100insure.com';
         }, 5000);
       }).catch(function (err) {
         console.log(err);
@@ -52129,18 +52131,21 @@ var App = function (_Component) {
           confirmationModalOpen = _state.confirmationModalOpen,
           confirmationSnackbarOpen = _state.confirmationSnackbarOpen,
           data = _objectWithoutProperties(_state, ['stepIndex', 'loading', 'navOpen', 'smallScreen', 'confirmationModalOpen', 'confirmationSnackbarOpen']);
-
-      console.log('data', data);
+      // console.log('data', data)
       // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
+
+
       var contactFormFilled = data.phone && data.validPhone || this.state.phone;
       var modalActions = [React.createElement(_FlatButton2.default, {
         label: 'Cancel',
         primary: false,
+        disabled: this.state.submitting,
         onClick: function onClick() {
           return _this5.setState({ confirmationModalOpen: false });
         } }), React.createElement(_FlatButton2.default, {
         label: 'Confirm',
         primary: true,
+        disabled: this.state.submitting,
         onClick: function onClick() {
           return _this5.handleSubmit();
         } })];
