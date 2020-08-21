@@ -70,6 +70,7 @@ export default class App extends Component {
     this.state = {
       admin: true,
       loading: true,
+      submitting:  false,
       navOpen: false,
       confirmationModalOpen: false,
       confirmationTextVisible: false,
@@ -174,6 +175,7 @@ export default class App extends Component {
   }
 
   handleSubmit() {
+    this.setState({ submitting : true })
     const today = new Date()
     const event1 = new Date('July 1, 1999')
     const event2 = this.state.appointmentDate
@@ -335,15 +337,18 @@ export default class App extends Component {
 
   render() {
     const { stepIndex, loading, navOpen, smallScreen, confirmationModalOpen, confirmationSnackbarOpen, ...data } = this.state
+    console.log('data', data)
     // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
     const contactFormFilled = ( data.phone && data.validPhone ) || this.state.phone_number
     const modalActions = [
       <FlatButton
         label="Cancel"
         primary={false}
+        disabled={ this.state.submitting }
         onClick={() => this.setState({ confirmationModalOpen : false})} />,
       <FlatButton
         label="Confirm"
+        disabled={ this.state.submitting }
         primary={true}
         onClick={() => this.handleSubmit()} />
     ]

@@ -51833,6 +51833,7 @@ var App = function (_Component) {
     _this.state = {
       admin: true,
       loading: true,
+      submitting: false,
       navOpen: false,
       confirmationModalOpen: false,
       confirmationTextVisible: false,
@@ -51951,6 +51952,7 @@ var App = function (_Component) {
     value: function handleSubmit() {
       var _this2 = this;
 
+      this.setState({ submitting: true });
       var today = new Date();
       var event1 = new Date('July 1, 1999');
       var event2 = this.state.appointmentDate;
@@ -52192,17 +52194,19 @@ var App = function (_Component) {
           confirmationModalOpen = _state.confirmationModalOpen,
           confirmationSnackbarOpen = _state.confirmationSnackbarOpen,
           data = _objectWithoutProperties(_state, ['stepIndex', 'loading', 'navOpen', 'smallScreen', 'confirmationModalOpen', 'confirmationSnackbarOpen']);
+
+      console.log('data', data);
       // const contactFormFilled = data.firstName && data.lastName && data.phone && data.email && data.validPhone && data.validEmail
-
-
       var contactFormFilled = data.phone && data.validPhone || this.state.phone_number;
       var modalActions = [React.createElement(_FlatButton2.default, {
         label: 'Cancel',
         primary: false,
+        disabled: this.state.submitting,
         onClick: function onClick() {
           return _this6.setState({ confirmationModalOpen: false });
         } }), React.createElement(_FlatButton2.default, {
         label: 'Confirm',
+        disabled: this.state.submitting,
         primary: true,
         onClick: function onClick() {
           return _this6.handleSubmit();
