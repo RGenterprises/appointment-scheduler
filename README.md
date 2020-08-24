@@ -1,6 +1,4 @@
 # Appointment Scheduler
-![Image](https://cosmicjs.com/uploads/b5467280-9745-11e7-9fec-572a0ce3e796-app-scheduler.png)
-### [View Demo](https://cosmicjs.com/apps/appointment-scheduler/demo)
 
 This Appointment Scheduler lets users select a day and a time slot between 1AM and 8PM eastern to meet with us. It integrates with AWS SQS to put a CBHOLD status in vicidialer with the time, and it updates the hubspot record associated with it with a TASK. It updates the Hubspot custom properties for vici. 
 
