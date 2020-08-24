@@ -4,3 +4,6 @@ This Appointment Scheduler lets users select a day and a time slot between 1AM a
 to tie the phone number together with the vici dial user it must look up the lead by phone number in the postgresql database table nextsales_leads So if the user changes their phone number a manual fix will have to be made.
 
 if the schedule appointment fails a message with the SQS message posts to slack in the room #servermessages
+
+# The admin version
+allows for military time to be entered in place of random time slots.
