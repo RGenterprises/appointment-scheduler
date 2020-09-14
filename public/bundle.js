@@ -51967,10 +51967,13 @@ var App = function (_Component) {
 					confirmationSnackbarMessage: "Appointment succesfully added!",
 					confirmationSnackbarOpen: true,
 					processed: true
-				});
-				setTimeout(function () {
+				}, function () {
 					window.top.location = "/";
-				}, 1000);
+				});
+
+				/* setTimeout(() => {
+    	window.top.location = "/";
+    }, 10000); */
 			}).catch(function (err) {
 				console.log(err);
 				return _this2.setState({
@@ -52368,7 +52371,7 @@ var App = function (_Component) {
 					),
 					React.createElement(_Snackbar2.default, {
 						open: confirmationSnackbarOpen || loading,
-						message: loading ? "Loading... " : data.confirmationSnackbarMessage || "",
+						message: loading ? "Loading..." : data.confirmationSnackbarMessage || "",
 						autoHideDuration: 1000,
 						onRequestClose: function onRequestClose() {
 							return _this6.setState({ confirmationSnackbarOpen: false });

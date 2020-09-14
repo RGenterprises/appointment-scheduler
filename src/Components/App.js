@@ -587,7 +587,7 @@ export default class App extends Component {
 					<SnackBar
 						open={confirmationSnackbarOpen || loading}
 						message={
-							loading ? "Loading... " : data.confirmationSnackbarMessage || ""
+							loading ? "Loading..." : data.confirmationSnackbarMessage || ""
 						}
 						autoHideDuration={1000}
 						onRequestClose={() =>
